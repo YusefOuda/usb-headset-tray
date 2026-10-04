@@ -34,14 +34,21 @@ jobs:
           -Uri "https://github.com/Sapd/HeadsetControl/releases/latest/download/headsetcontrol-windows-x86_64.exe"
           -OutFile "publish\headsetcontrol.exe"
 
-      - name: Package
+      - name: Package zip
         run: >
           Compress-Archive
           -Path "publish\UsbHeadsetTray.exe", "publish\headsetcontrol.exe"
           -DestinationPath "publish\usb-headset-tray.zip"
 
+      - name: Build installer
+        run: |
+          $version = "${{ github.ref_name }}".TrimStart('v')
+          & "C:\Program Files (x86)\Inno Setup 6\iscc.exe" /DAppVersion=$version installer.iss
+
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          files: publish/usb-headset-tray.zip
+          files: |
+            publish/usb-headset-tray.zip
+            publish/usb-headset-tray-setup.exe
           generate_release_notes: true

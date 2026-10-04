@@ -23,9 +23,9 @@ HeadsetControl is bundled in the release zip — no separate install needed.
 
 ## Installation
 
-1. Download `usb-headset-tray.zip` from [Releases](../../releases)
-2. Extract both `UsbHeadsetTray.exe` and `headsetcontrol.exe` to the same folder
-3. Run `UsbHeadsetTray.exe`
+**Installer (recommended):** Download `usb-headset-tray-setup.exe` from [Releases](../../releases) and run it. Installs to `%LOCALAPPDATA%\usb-headset-tray` with no UAC prompt.
+
+**Portable:** Download `usb-headset-tray.zip`, extract both `UsbHeadsetTray.exe` and `headsetcontrol.exe` to a permanent folder, then run `UsbHeadsetTray.exe`. Enable **Start with Windows** from the tray menu *after* placing the files in their final location.
 
 ## Usage
 
