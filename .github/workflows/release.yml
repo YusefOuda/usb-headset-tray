@@ -1,0 +1,47 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: windows-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Publish
+        run: >
+          dotnet publish usb-headset-tray.csproj
+          -c Release
+          -r win-x64
+          --self-contained
+          -p:PublishSingleFile=true
+          -p:IncludeNativeLibrariesForSelfExtract=true
+          -o publish
+
+      - name: Download HeadsetControl
+        run: >
+          Invoke-WebRequest
+          -Uri "https://github.com/Sapd/HeadsetControl/releases/latest/download/headsetcontrol-windows-x86_64.exe"
+          -OutFile "publish\headsetcontrol.exe"
+
+      - name: Package
+        run: >
+          Compress-Archive
+          -Path "publish\UsbHeadsetTray.exe", "publish\headsetcontrol.exe"
+          -DestinationPath "publish\usb-headset-tray.zip"
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: publish/usb-headset-tray.zip
+          generate_release_notes: true
