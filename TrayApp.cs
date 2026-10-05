@@ -19,7 +19,10 @@ class TrayApp : ApplicationContext
     int? _queriedEqPreset;
     string? _previousDefaultDevice;
     HeadsetState _lastState = HeadsetState.Unknown;
+    int _batteryLevel;
+    bool _isCharging;
     ContextMenuStrip? _menu;
+    ToolStripMenuItem? _statusItem;
 
     public TrayApp()
     {
@@ -35,7 +38,7 @@ class TrayApp : ApplicationContext
 
         RebuildMenu();
 
-        _timer = new System.Windows.Forms.Timer { Interval = 3000 };
+        _timer = new System.Windows.Forms.Timer { Interval = 5000 };
         _timer.Tick += Timer_Tick;
         _timer.Start();
     }
@@ -54,9 +57,18 @@ class TrayApp : ApplicationContext
         _tray.ContextMenuStrip = _menu;
     }
 
+    string GetStatusText() =>
+        _headsetOnline
+            ? (_isCharging ? "Battery: Charging" : $"Battery: {_batteryLevel}%")
+            : "Headset offline";
+
     ContextMenuStrip BuildMenu()
     {
         var menu = new ContextMenuStrip();
+
+        _statusItem = new ToolStripMenuItem(GetStatusText()) { Enabled = false };
+        menu.Items.Add(_statusItem);
+        menu.Items.Add(new ToolStripSeparator());
 
         var autoSwitch = new ToolStripMenuItem("Auto-switch audio") { CheckOnClick = true, Checked = _settings.AutoSwitch };
         autoSwitch.CheckedChanged += (_, _) =>
@@ -249,6 +261,9 @@ class TrayApp : ApplicationContext
 
     void ApplyStatus(HeadsetStatus status)
     {
+        _batteryLevel = status.BatteryLevel;
+        _isCharging = status.IsCharging;
+
         var oldIcon = _tray.Icon;
         _tray.Icon = IconRenderer.ForStatus(status);
         oldIcon?.Dispose();
@@ -279,6 +294,9 @@ class TrayApp : ApplicationContext
             }
             RebuildMenu();
         }
+
+        if (_statusItem != null)
+            _statusItem.Text = GetStatusText();
 
         HandleAutoSwitch(status);
         _lastState = status.State;
