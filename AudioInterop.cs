@@ -13,6 +13,7 @@ enum DeviceState : uint
     Disabled = 0x2,
     NotPresent = 0x4,
     Unplugged = 0x8,
+    All = 0xF,
 }
 
 [StructLayout(LayoutKind.Sequential)]
@@ -51,8 +52,19 @@ interface IMMDeviceEnumerator
     [PreserveSig] int EnumAudioEndpoints(EDataFlow dataFlow, DeviceState stateMask, out IMMDeviceCollection ppDevices);
     [PreserveSig] int GetDefaultAudioEndpoint(EDataFlow dataFlow, ERole role, out IMMDevice ppEndpoint);
     [PreserveSig] int GetDevice([MarshalAs(UnmanagedType.LPWStr)] string pwstrId, out IMMDevice ppDevice);
-    [PreserveSig] int RegisterEndpointNotificationCallback(IntPtr pClient);
-    [PreserveSig] int UnregisterEndpointNotificationCallback(IntPtr pClient);
+    [PreserveSig] int RegisterEndpointNotificationCallback(IMMNotificationClient pClient);
+    [PreserveSig] int UnregisterEndpointNotificationCallback(IMMNotificationClient pClient);
+}
+
+// Implemented by AudioDeviceWatcher; called by the audio service on its own threads.
+[ComImport, Guid("7991EEC9-7E89-4D85-8390-6C703CEC60C0"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+interface IMMNotificationClient
+{
+    [PreserveSig] int OnDeviceStateChanged([MarshalAs(UnmanagedType.LPWStr)] string pwstrDeviceId, DeviceState dwNewState);
+    [PreserveSig] int OnDeviceAdded([MarshalAs(UnmanagedType.LPWStr)] string pwstrDeviceId);
+    [PreserveSig] int OnDeviceRemoved([MarshalAs(UnmanagedType.LPWStr)] string pwstrDeviceId);
+    [PreserveSig] int OnDefaultDeviceChanged(EDataFlow flow, ERole role, [MarshalAs(UnmanagedType.LPWStr)] string? pwstrDefaultDeviceId);
+    [PreserveSig] int OnPropertyValueChanged([MarshalAs(UnmanagedType.LPWStr)] string pwstrDeviceId, PROPERTYKEY key);
 }
 
 [ComImport, Guid("0BD7A1BE-7A1A-44DB-8397-CC5392387B5E"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]

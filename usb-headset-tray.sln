@@ -1,9 +1,13 @@
-
+﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "usb-headset-tray", "usb-headset-tray.csproj", "{B3E2C3D4-5F6A-7B8C-9D0E-1F2A3B4C5D6E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{82C06D65-05FB-433C-B9E0-2553A4DFA1F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UsbHeadsetTray.Tests", "tests\UsbHeadsetTray.Tests\UsbHeadsetTray.Tests.csproj", "{09E88252-F42A-4E48-9BE9-4B5C639B08C9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,8 +19,15 @@ Global
 		{B3E2C3D4-5F6A-7B8C-9D0E-1F2A3B4C5D6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B3E2C3D4-5F6A-7B8C-9D0E-1F2A3B4C5D6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B3E2C3D4-5F6A-7B8C-9D0E-1F2A3B4C5D6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09E88252-F42A-4E48-9BE9-4B5C639B08C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09E88252-F42A-4E48-9BE9-4B5C639B08C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09E88252-F42A-4E48-9BE9-4B5C639B08C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09E88252-F42A-4E48-9BE9-4B5C639B08C9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{09E88252-F42A-4E48-9BE9-4B5C639B08C9} = {82C06D65-05FB-433C-B9E0-2553A4DFA1F2}
 	EndGlobalSection
 EndGlobal

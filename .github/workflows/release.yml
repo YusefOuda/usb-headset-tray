@@ -18,15 +18,21 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
+      - name: Test
+        run: dotnet test
+
+      # Version comes from the tag; the update checker compares it against the latest release
       - name: Publish
-        run: >
-          dotnet publish usb-headset-tray.csproj
-          -c Release
-          -r win-x64
-          --self-contained
-          -p:PublishSingleFile=true
-          -p:IncludeNativeLibrariesForSelfExtract=true
-          -o publish
+        run: |
+          $version = "${{ github.ref_name }}".TrimStart('v')
+          dotnet publish usb-headset-tray.csproj `
+            -c Release `
+            -r win-x64 `
+            --self-contained `
+            -p:PublishSingleFile=true `
+            -p:IncludeNativeLibrariesForSelfExtract=true `
+            "-p:Version=$version" `
+            -o publish
 
       - name: Download HeadsetControl
         run: >

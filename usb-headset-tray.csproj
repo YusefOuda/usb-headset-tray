@@ -7,5 +7,18 @@
     <RootNamespace>UsbHeadsetTray</RootNamespace>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <!-- Dev builds are 0.0.0 and skip the update check; release.yml sets the version from the git tag -->
+    <Version>0.0.0</Version>
   </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="UsbHeadsetTray.Tests" />
+  </ItemGroup>
+
+  <!-- The test project lives under this folder; keep its sources out of the app -->
+  <ItemGroup>
+    <Compile Remove="tests\**" />
+    <EmbeddedResource Remove="tests\**" />
+    <None Remove="tests\**" />
+  </ItemGroup>
 </Project>

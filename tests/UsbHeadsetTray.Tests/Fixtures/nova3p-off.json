@@ -1,0 +1,100 @@
+{
+  "name": "HeadsetControl",
+  "version": "4.1.0",
+  "api_version": "1.5",
+  "hidapi_version": "0.15.0",
+  "device_count": 1,
+  "devices": [
+    {
+      "status": "partial",
+      "device": "SteelSeries Arctis Nova 3P Wireless",
+      "vendor": "SteelSeries",
+      "product": "Arctis Nova 3X Wireless",
+      "id_vendor": "0x1038",
+      "id_product": "0x226d",
+      "capabilities": [
+        "CAP_SIDETONE",
+        "CAP_BATTERY_STATUS",
+        "CAP_INACTIVE_TIME",
+        "CAP_EQUALIZER_PRESET",
+        "CAP_EQUALIZER",
+        "CAP_PARAMETRIC_EQUALIZER",
+        "CAP_MICROPHONE_VOLUME"
+      ],
+      "capabilities_str": [
+        "sidetone",
+        "battery",
+        "inactive time",
+        "equalizer preset",
+        "equalizer",
+        "parametric equalizer",
+        "microphone volume"
+      ],
+      "battery": {
+        "status": "BATTERY_UNAVAILABLE",
+        "level": -1
+      },
+      "equalizer": {
+        "bands": 10,
+        "baseline": 0,
+        "step": 0.10000000149011612,
+        "min": -12,
+        "max": 12
+      },
+      "equalizer_presets_count": 4,
+      "equalizer_presets": {
+        "flat": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "bass": [
+          3.5,
+          5.5,
+          4.0,
+          1.0,
+          -1.5,
+          -1.5,
+          -1.0,
+          -1.0,
+          -1.0,
+          -1.0
+        ],
+        "focus": [
+          -5.0,
+          -3.5,
+          -1.0,
+          -3.5,
+          -2.5,
+          4.0,
+          6.0,
+          -3.5,
+          0.0,
+          0.0
+        ],
+        "smiley": [
+          3.0,
+          3.5,
+          1.5,
+          -1.5,
+          -4.0,
+          -4.0,
+          -2.5,
+          1.5,
+          3.0,
+          4.0
+        ]
+      },
+      "errors": {
+        "battery": "Device is offline or not responding"
+      }
+    }
+  ]
+}
