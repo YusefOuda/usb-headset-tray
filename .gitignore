@@ -5,5 +5,4 @@ publish/
 *.user
 *.suo
 .idea/
-CLAUDE.md
 .claude/
