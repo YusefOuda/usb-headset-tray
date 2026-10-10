@@ -715,7 +715,7 @@ class TrayApp : ApplicationContext
 
     static string Truncate(string s, int max) => s.Length <= max ? s : s[..max];
 
-    void ExitApp()
+    public void ExitApp()
     {
         _timer.Stop();
         _updateTimer.Stop();

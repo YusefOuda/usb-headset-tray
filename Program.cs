@@ -3,8 +3,15 @@ namespace UsbHeadsetTray;
 static class Program
 {
     [STAThread]
-    static void Main()
+    static void Main(string[] args)
     {
+        // Used by the installer: asks the running instance to exit before its files are replaced
+        if (args.Contains("--quit"))
+        {
+            QuitSignal.Send();
+            return;
+        }
+
         using var mutex = new Mutex(true, "usb-headset-tray-{B3E2C3D4-5F6A-7B8C-9D0E}", out var firstInstance);
         if (!firstInstance) return;
 
@@ -19,7 +26,11 @@ static class Program
         Application.EnableVisualStyles();
         Application.SetCompatibleTextRenderingDefault(false);
         Application.SetHighDpiMode(HighDpiMode.PerMonitorV2);
-        Application.Run(new TrayApp());
+        // Lets QuitSignal post to this thread; no Control exists yet to install it
+        SynchronizationContext.SetSynchronizationContext(new WindowsFormsSynchronizationContext());
+        var app = new TrayApp();
+        QuitSignal.Listen(app.ExitApp);
+        Application.Run(app);
         Log.Info("Exiting");
     }
 }
