@@ -110,6 +110,7 @@ class TrayApp : ApplicationContext
     {
         if (_pollProblem == message) return;
         _pollProblem = message;
+        Log.Error($"{message}{(balloonDetail != null ? $": {balloonDetail}" : "")}");
 
         var oldIcon = _tray.Icon;
         _tray.Icon = IconRenderer.Disconnected();
@@ -288,6 +289,15 @@ class TrayApp : ApplicationContext
             ApplyStartWithWindows(startWithWindows.Checked);
         };
         parent.DropDownItems.Add(startWithWindows);
+
+        parent.DropDownItems.Add(new ToolStripSeparator());
+        var openLog = new ToolStripMenuItem("Open log folder");
+        openLog.Click += (_, _) =>
+        {
+            try { System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(Log.Folder) { UseShellExecute = true }); }
+            catch { }
+        };
+        parent.DropDownItems.Add(openLog);
 
         return parent;
     }
@@ -628,6 +638,7 @@ class TrayApp : ApplicationContext
         bool wasOnline = _lastState == HeadsetState.Online;
         bool isOnline = status.State == HeadsetState.Online;
         if (wasOnline == isOnline) return;
+        Log.Info($"Headset {(isOnline ? "online" : "offline")}");
 
         foreach (var flow in Flows)
         {
@@ -654,6 +665,7 @@ class TrayApp : ApplicationContext
 
     void OnDeviceStateChanged(string deviceId, DeviceState newState)
     {
+        Log.Info($"Device {deviceId} is now {newState}");
         RebuildMenuWhenClosed();
 
         // Device ids are specific to one direction, so at most one direction's list can match
@@ -672,6 +684,7 @@ class TrayApp : ApplicationContext
     {
         var oldDefault = _observedDefault.GetValueOrDefault(flow);
         _observedDefault[flow] = newDefault;
+        Log.Info($"Default {flow} device is now {newDefault ?? "none"}");
 
         if (!FallbackRulesActive(flow)) return;
 
@@ -682,8 +695,9 @@ class TrayApp : ApplicationContext
 
     static void TrySetDefault(string deviceId)
     {
+        Log.Info($"Setting default device: {deviceId}");
         try { AudioDeviceManager.SetDefaultDevice(deviceId); }
-        catch { }
+        catch (Exception e) { Log.Error($"Setting default device {deviceId} failed", e); }
     }
 
     static void ApplyStartWithWindows(bool enable)

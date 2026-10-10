@@ -38,6 +38,7 @@ xUnit project in `tests/UsbHeadsetTray.Tests` (`net8.0-windows`, sees internals 
 | `BatteryEstimator.cs` | Estimates time remaining from discharge rate; exposes a blended `LearnedRate` that `TrayApp` saves as `BatteryDrainPerHour` |
 | `IconRenderer.cs` | Generates a `System.Drawing.Icon` via GDI+. Battery bar (fixed 16 px) or, with `IconShowsPercentage`, the level as white digits on a darkened color badge drawn at `SystemInformation.SmallIconSize` so it stays sharp at high DPI. Charging/offline always use the bar. `DrawPercentage(level, size)` is internal so the icon can be previewed at any size |
 | `AppSettings.cs` | JSON persistence to `%APPDATA%\usb-headset-tray\settings.json` |
+| `Log.cs` | Append-only log at `%APPDATA%\usb-headset-tray\usb-headset-tray.log` (rolls to `.old.log` at 1 MB). `Program` routes unhandled exceptions here instead of the WinForms Continue/Quit dialog |
 
 ### Data flow
 

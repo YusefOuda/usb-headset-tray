@@ -75,11 +75,15 @@ static class HeadsetPoller
         {
             return new(null, PollFailure.NotFound);
         }
-        catch
+        catch (Exception ex)
         {
+            Log.Error("Running headsetcontrol failed", ex);
             return new(null, PollFailure.Failed);
         }
-        return Parse(json);
+        var result = Parse(json);
+        if (result.Failure == PollFailure.Failed)
+            Log.Error($"Unreadable headsetcontrol output: {(json.Length > 300 ? json[..300] + "..." : json)}");
+        return result;
     }
 
     // Exit code is ignored: the JSON is what tells us whether a device was found.
